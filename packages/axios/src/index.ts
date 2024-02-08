@@ -107,7 +107,7 @@ const generateAxiosImplementation = (
       isFormData,
       isFormUrlEncoded,
       isBodyVerb,
-      hasSignal: false,
+      addSignal: false,
       isExactOptionalPropertyTypes,
     });
 

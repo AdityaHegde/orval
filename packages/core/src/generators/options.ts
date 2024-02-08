@@ -250,7 +250,7 @@ export const generateMutatorConfig = ({
   isFormData,
   isFormUrlEncoded,
   isBodyVerb,
-  hasSignal,
+  addSignal,
   isExactOptionalPropertyTypes,
   isVue,
 }: {
@@ -263,7 +263,7 @@ export const generateMutatorConfig = ({
   isFormData: boolean;
   isFormUrlEncoded: boolean;
   isBodyVerb: boolean;
-  hasSignal: boolean;
+  addSignal: boolean;
   isExactOptionalPropertyTypes: boolean;
   isVue?: boolean;
 }) => {
@@ -286,7 +286,7 @@ export const generateMutatorConfig = ({
       : '';
 
   return `{url: \`${route}\`, method: '${verb.toUpperCase()}'${headerOptions}${bodyOptions}${queryParamsOptions}${
-    !isBodyVerb && hasSignal
+    addSignal
       ? `, ${
           isExactOptionalPropertyTypes
             ? '...(signal ? { signal }: {})'

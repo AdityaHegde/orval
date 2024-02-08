@@ -149,7 +149,7 @@ const generateSwrRequestFunction = (
       verb,
       isFormData,
       isFormUrlEncoded,
-      hasSignal: false,
+      addSignal: false,
       isBodyVerb,
       isExactOptionalPropertyTypes,
     });

@@ -162,7 +162,7 @@ const generateImplementation = (
       verb,
       isFormData,
       isFormUrlEncoded,
-      hasSignal: false,
+      addSignal: false,
       isBodyVerb,
       isExactOptionalPropertyTypes,
     });

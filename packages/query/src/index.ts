@@ -389,6 +389,7 @@ const generateQueryRequestFunction = (
   const isFormData = override.formData !== false;
   const isFormUrlEncoded = override.formUrlEncoded !== false;
   const hasSignal = !!override.query.signal;
+  const queryOverride = !!override.query.useQuery;
 
   const isSyntheticDefaultImportsAllowed = isSyntheticDefaultImportsAllow(
     context.output.tsconfig,
@@ -406,6 +407,8 @@ const generateQueryRequestFunction = (
   });
 
   if (mutator) {
+    const addSignal = (!isBodyVerb || queryOverride) && hasSignal;
+
     const mutatorConfig = generateMutatorConfig({
       route,
       body,
@@ -416,7 +419,7 @@ const generateQueryRequestFunction = (
       isFormData,
       isFormUrlEncoded,
       isBodyVerb,
-      hasSignal,
+      addSignal,
       isExactOptionalPropertyTypes,
       isVue: isVue(outputClient),
     });
@@ -449,9 +452,7 @@ const generateQueryRequestFunction = (
           isRequestOptions && mutator.hasSecondArg
             ? `options?: SecondParameter<ReturnType<typeof ${mutator.name}>>,`
             : ''
-        }${
-          !isBodyVerb && hasSignal ? 'signal?: AbortSignal\n' : ''
-        }) => {${bodyForm}
+        }${addSignal ? 'signal?: AbortSignal\n' : ''}) => {${bodyForm}
         return ${operationName}(
           ${mutatorConfig},
           ${requestOptions});
@@ -464,7 +465,7 @@ const generateQueryRequestFunction = (
       isRequestOptions && mutator.hasSecondArg
         ? `options?: SecondParameter<typeof ${mutator.name}>,`
         : ''
-    }${!isBodyVerb && hasSignal ? 'signal?: AbortSignal\n' : ''}) => {
+    }${addSignal ? 'signal?: AbortSignal\n' : ''}) => {
       ${isVue(outputClient) ? vueUnRefParams(props) : ''}
       ${bodyForm}
       return ${mutator.name}<${response.definition.success || 'unknown'}>(
